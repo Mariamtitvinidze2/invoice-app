@@ -45,7 +45,7 @@ const Signup = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Signup Data:", data);
-    router.push("/inside");
+    router.push("/Home");
   };
 
   return (

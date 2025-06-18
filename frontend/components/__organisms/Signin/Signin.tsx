@@ -38,7 +38,7 @@ const Signin = () => {
 
   const onSubmit = (data: FormData) => {
     console.log("Form Data:", data);
-    router.push("/inside");
+    router.push("/Home");
   };
 
   return (
@@ -80,14 +80,13 @@ const Signin = () => {
           {submitError && (
             <p className="text-sm text-red-500 mb-2">{submitError}</p>
           )}
-          <Link href="/Home">
-            <button
-              type="submit"
-              className="bg-indigo-600 text-white h-11 rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-md"
-            >
-              Sign In
-            </button>
-          </Link>
+
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white h-11 w-[370px] rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-md"
+          >
+            Sign In
+          </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-gray-600">
