@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+interface User {
+  email: string;
+  password: string;
+}
 
 type FormData = {
   email: string;
@@ -26,19 +31,41 @@ const validationSchema = Yup.object().shape({
 
 const Signin = () => {
   const router = useRouter();
+  const [submitError, setSubmitError] = useState("");
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   });
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    if (loggedIn === "true") {
+      router.push("/Home");
+    }
+  }, [router]);
 
-  const [submitError, setSubmitError] = useState("");
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    if (rememberedEmail) setValue("email", rememberedEmail);
+  }, [setValue]);
 
   const onSubmit = (data: FormData) => {
-    console.log("Form Data:", data);
-    router.push("/Home");
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find(
+      (u) => u.email === data.email && u.password === data.password
+    );
+
+    if (foundUser) {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("rememberedEmail", data.email);
+      router.push("/Home");
+    } else {
+      setSubmitError("Incorrect email or password");
+    }
   };
 
   return (
@@ -47,7 +74,6 @@ const Signin = () => {
         <h5 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Sign In
         </h5>
-
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <input
             type="text"

@@ -1,17 +1,31 @@
+"use client";
+
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import PictureOne from "../../../Images/PictureOne.png";
 import moon from "../../../Images/moon.png";
 import profile from "../../../Images/profile.png";
 import PictureTwo from "../../../Images/PictureTwo.png";
 
 const HomePage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    if (!loggedIn) router.push("/");
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    router.push("/");
+  };
+
   return (
     <div className="flex items-center justify-center w-full h-screen bg-[#F8F8FB]">
-      <div className="w-[1200px] h-[600px] flex rounded-[20px] shadow-xl overflow-hidden">
+      <div className="w-[1200px] h-[600px] flex rounded-[20px] shadow-xl overflow-hidden relative">
         <div className="w-[103px] bg-[#373B53] flex flex-col justify-between items-center rounded-r-[20px] overflow-hidden">
           <Image src={PictureOne} alt="Logo" width={103} height={60} />
-
           <div className="flex flex-col items-center gap-6 pb-6">
             <Image src={moon} alt="Moon" width={20} height={20} />
             <div className="w-full h-[1px] bg-[#494E6E]" />
@@ -66,6 +80,13 @@ const HomePage = () => {
               started
             </p>
           </div>
+
+          <button
+            onClick={handleLogout}
+            className="absolute bottom-6 right-6 text-sm bg-[#7C5DFA] hover:bg-[#9277FF] text-white px-4 py-2 rounded-md shadow"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </div>
