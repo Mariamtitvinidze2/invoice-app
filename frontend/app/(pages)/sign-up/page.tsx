@@ -1,11 +1,10 @@
 import Signup from "@/components/__organisms/Signup/Signup";
-import React from "react";
 
 const page = () => {
   return (
-    <div>
+    <>
       <Signup />
-    </div>
+    </>
   );
 };
 
