@@ -59,6 +59,7 @@ const HomePage = () => {
             alt="Empty"
             width={240}
             height={200}
+            priority
             className="mb-10"
           />
           <h2 className="text-[24px] font-bold text-[#0C0E16] mb-4">

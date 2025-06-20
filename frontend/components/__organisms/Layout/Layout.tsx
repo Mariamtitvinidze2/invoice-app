@@ -1,8 +1,8 @@
 "use client";
 
-import Header from "@/app/(pages)/Header/page";
 import { usePathname } from "next/navigation";
 import { Inter } from "next/font/google";
+import Header from "../Header/Header";
 
 const inter = Inter({
   subsets: ["greek"],

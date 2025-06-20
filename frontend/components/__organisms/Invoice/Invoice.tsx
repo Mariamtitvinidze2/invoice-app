@@ -3,18 +3,78 @@
 import PaymentTerms from "@/components/__atoms/Invoice-details/PaymentTerms";
 import React, { useEffect, useState } from "react";
 import PriceTotal from "@/components/__atoms/Invoice-details/PriceTotal";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
+import Trash from "../../../Images/trash.png";
 
 type Props = {
   onDiscard: () => void;
 };
 
+type Item = {
+  id: number;
+};
+
+type FormValue = {
+  address: string;
+  city: string;
+  postcode: string;
+  country: string;
+  addressTwo: string;
+  cityTwo: string;
+  postcodeTwo: string;
+  countryTwo: string;
+  name: string;
+  email: string;
+  description: string;
+  date: string;
+};
+
+const schema = yup.object().shape({
+  address: yup.string().required(),
+  city: yup.string().required(),
+  postcode: yup.string().required(),
+  country: yup.string().required(),
+  addressTwo: yup.string().required(),
+  cityTwo: yup.string().required(),
+  postcodeTwo: yup.string().required(),
+  countryTwo: yup.string().required(),
+  name: yup.string().required(),
+  email: yup.string().required().email(),
+  description: yup.string().required(),
+  date: yup.string().required(),
+});
+
 const Invoice = ({ onDiscard }: Props) => {
-  const [items, setItems] = useState<number[]>([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValue>({ resolver: yupResolver(schema) });
+  const [items, setItems] = useState<Item[]>([]);
   const [discard, setDiscard] = useState(false);
 
   const newItem = (e: React.FormEvent<HTMLButtonElement>) => {
-    setItems((prev) => [...prev, prev.length]);
+    setItems((prev) => [...prev, { id: Date.now() }]);
   };
+
+  const deletItem = (id: number) => {
+    setItems((prev) => prev.filter((el) => el.id !== id));
+  };
+
+  const onSubmit = async (data: FormValue) => {
+    localStorage.setItem("Invoice", JSON.stringify(data));
+    setDiscard(true);
+    console.log(data, "data");
+  };
+
+  // const dataFromModal = localStorage.getItem("Invoice");
+  // if (dataFromModal) {
+  //   const savedInfo = JSON.parse(dataFromModal);
+  // }
+  // თუ ინფორმაციის წამოღება მოგინდება მეინ ფეიჯზე ეს ჩაკომენტარებული კოდი გამოიყენე, ოღონდ useEffect-ში ჩასვი<3
 
   useEffect(() => {
     if (discard) {
@@ -24,11 +84,20 @@ const Invoice = ({ onDiscard }: Props) => {
 
   return (
     <div className=" bg-gray-900/60 w-[100%] h-full absolute ">
-      <div className="w-[50%] pl-[110px] top-0 left-0 h-[100vh] flex flex-col justify-start p-[20px] pr-[1.7px] rounded-r-[30px] bg-white absolute ">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-[50%] pl-[110px] top-0 left-0 h-[100vh] flex flex-col justify-start p-[20px] pr-[1.7px] rounded-r-[30px] bg-white absolute "
+      >
         <div className=" overflow-y-auto pr-5">
           <h1 className="font-[inter] font-semibold text-3xl mb-7 ">
             New Invoice
           </h1>
+
+          {Object.keys(errors).length > 0 && (
+            <p className="font-[inter] text-red-700 font-semibold absolute top-[30px] right-[30px] ">
+              - All fields must be added!
+            </p>
+          )}
 
           <div className=" w-[100%] flex flex-col mb-7 gap-2 ">
             <h3 className="font-[inter] font-semibold text-lg text-[#7C5DFA] ">
@@ -42,8 +111,13 @@ const Invoice = ({ onDiscard }: Props) => {
               <input
                 type="text"
                 id="address"
-                required
-                className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                {...register("address")}
+                className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.address
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
               />
             </div>
 
@@ -55,8 +129,13 @@ const Invoice = ({ onDiscard }: Props) => {
                 <input
                   type="text"
                   id="city"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  {...register("city")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.city
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
 
@@ -70,8 +149,13 @@ const Invoice = ({ onDiscard }: Props) => {
                 <input
                   type="text"
                   id="postcode"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  {...register("postcode")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.postcode
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
 
@@ -85,8 +169,13 @@ const Invoice = ({ onDiscard }: Props) => {
                 <input
                   type="text"
                   id="country"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  {...register("country")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.country
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
             </div>
@@ -104,8 +193,13 @@ const Invoice = ({ onDiscard }: Props) => {
               <input
                 type="text"
                 id="name"
-                required
-                className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                {...register("name")}
+                className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.name
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
               />
             </div>
 
@@ -116,64 +210,95 @@ const Invoice = ({ onDiscard }: Props) => {
               <input
                 type="email"
                 id="email"
-                required
+                {...register("email")}
                 placeholder="e.g. email@example.com"
-                className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.email
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
               />
             </div>
 
             <div>
-              <label htmlFor="address" className="text-[#7E88C3] mb-1  text-sm">
+              <label
+                htmlFor="addressTwo"
+                className="text-[#7E88C3] mb-1  text-sm"
+              >
                 Street Address
               </label>
               <input
                 type="text"
-                id="address"
-                required
-                className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                id="addressTwo"
+                {...register("addressTwo")}
+                className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.addressTwo
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
               />
             </div>
 
             <div className="w-[100%] flex flex-row justify-between gap-4 ">
               <div className="flex flex-col">
-                <label htmlFor="city" className="text-[#7E88C3] mb-1  text-sm">
+                <label
+                  htmlFor="cityTwo"
+                  className="text-[#7E88C3] mb-1  text-sm"
+                >
                   City
                 </label>
                 <input
                   type="text"
-                  id="city"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  id="cityTwo"
+                  {...register("cityTwo")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.cityTwo
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
 
               <div className="flex flex-col">
                 <label
-                  htmlFor="postcode"
+                  htmlFor="postcodeTwo"
                   className="text-[#7E88C3] mb-1  text-sm"
                 >
                   Post Code
                 </label>
                 <input
                   type="text"
-                  id="postcode"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  id="postcodeTwo"
+                  {...register("postcodeTwo")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.postcodeTwo
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
 
               <div className="flex flex-col ">
                 <label
-                  htmlFor="country"
+                  htmlFor="countryTwo"
                   className="text-[#7E88C3] mb-1  text-sm"
                 >
                   Country
                 </label>
                 <input
                   type="text"
-                  id="country"
-                  required
-                  className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  id="countryTwo"
+                  {...register("countryTwo")}
+                  className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.countryTwo
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
             </div>
@@ -186,8 +311,13 @@ const Invoice = ({ onDiscard }: Props) => {
                 <input
                   type="date"
                   id="date"
-                  required
-                  className="w-[210px] h-[40px] outline-1 outline-[#DFE3FA] cursor-pointer border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                  {...register("date")}
+                  className={`w-[210px] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.date
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
                 />
               </div>
 
@@ -204,9 +334,14 @@ const Invoice = ({ onDiscard }: Props) => {
               <input
                 type="text"
                 id="description"
-                required
+                {...register("description")}
                 placeholder="e.g. Graphic Design"
-                className="w-[100%] h-[40px] outline-1 outline-[#DFE3FA] cursor-pointer border-[#DFE3FA] border-1 rounded-[5px] p-3 "
+                className={`w-[100%] h-[40px] outline-1 border-1
+                 rounded-[5px] p-3 ${
+                   errors.description
+                     ? `outline-[#ff0000] border-[#ff0000]`
+                     : `outline-[#DFE3FA] border-[#DFE3FA]`
+                 } `}
               />
             </div>
           </div>
@@ -227,11 +362,22 @@ const Invoice = ({ onDiscard }: Props) => {
               {items.map((el, i) => (
                 <div key={i} className="w-[100%] flex flex-row gap-3 ">
                   <PriceTotal />
+                  <button type="button" onClick={() => deletItem(el.id)}>
+                    <Image
+                      src={Trash}
+                      alt="trash"
+                      height={30}
+                      width={20}
+                      priority
+                      className="right-11 bottom-24 w-[25px] h-[25px] mt-[6px] ml-[15px] cursor-pointer "
+                    />
+                  </button>
                 </div>
               ))}
             </div>
 
             <button
+              type="button"
               onClick={newItem}
               className="w-[100%] h-[50px] bg-gray-100 cursor-pointer mt-4 hover:bg-gray-200 rounded-full text-center font-[inter] font-semibold text-purple-400 "
             >
@@ -239,25 +385,25 @@ const Invoice = ({ onDiscard }: Props) => {
             </button>
           </div>
 
-          <div className="w-[100%] h-[70px] flex flex-row items-center gap-20 mt-10">
+          <div className="w-[100%] h-[70px] flex flex-row items-center justify-between mt-10">
             <button
               onClick={() => setDiscard(true)}
-              className="w-[110px] h-[50px] rounded-full bg-gray-400 hover:bg-red-700 text-white cursor-pointer "
+              className="w-[110px] h-[50px] hover:w-[115px] hover:h-[55px] rounded-full bg-gray-400 hover:bg-red-700 text-white cursor-pointer "
             >
               Discard
             </button>
 
-            <div className=" flex-row flex items-center gap-3">
-              <button className="w-[130px] h-[50px] hover:bg-gray-500 rounded-full cursor-pointer bg-gray-700 text-white ">
-                Save as Draft
-              </button>
-              <button className="w-[130px] h-[50px] hover:bg-purple-500 rounded-full cursor-pointer bg-purple-600 text-white ">
+            <div className="">
+              <button
+                type="submit"
+                className="w-[130px] h-[50px] hover:w-[135px] hover:h-[55px] hover:bg-purple-500 rounded-full cursor-pointer bg-purple-600 text-white "
+              >
                 Save & Send
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

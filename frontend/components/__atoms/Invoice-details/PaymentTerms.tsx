@@ -13,7 +13,7 @@ const PaymentTerms = () => {
 
   return (
     <div>
-      <div className="flex flex-col ">
+      <div className="flex flex-col relative ">
         <p className="text-[#7E88C3] mb-1  text-sm">Payment Terms</p>
 
         <div
@@ -25,15 +25,16 @@ const PaymentTerms = () => {
         >
           <h1 className="font-semibold">{selectDate}</h1>
 
-          <button onClick={() => setModal(!modal)}>
+          <div onClick={() => setModal(!modal)}>
             <Image
               src={modal ? Right : left}
               alt={modal ? "right" : "left"}
               height={20}
               width={20}
+              priority
               className="cursor-pointer"
             />
-          </button>
+          </div>
         </div>
 
         {modal && (

@@ -65,6 +65,7 @@ const Header = () => {
           alt="Profile"
           width={40}
           height={40}
+          priority
           className="rounded-full border-white"
         />
       </div>
