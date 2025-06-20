@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +14,14 @@ type FormData = {
   email: string;
   password: string;
   repeatPassword: string;
+};
+
+type User = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  email: string;
+  password: string;
 };
 
 const validationSchema = Yup.object().shape({
@@ -32,6 +40,7 @@ const validationSchema = Yup.object().shape({
 
 const Signup = () => {
   const router = useRouter();
+  const [submitError, setSubmitError] = useState("");
 
   const {
     register,
@@ -40,11 +49,35 @@ const Signup = () => {
   } = useForm<FormData>({
     resolver: yupResolver(validationSchema),
   });
-
-  const [submitError, setSubmitError] = useState("");
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    if (loggedIn === "true") {
+      router.push("/Home");
+    }
+  }, [router]);
 
   const onSubmit = (data: FormData) => {
-    console.log("Signup Data:", data);
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
+
+    const emailExists = users.find((user) => user.email === data.email);
+    if (emailExists) {
+      setSubmitError("User with this email already exists.");
+      return;
+    }
+
+    const newUser: User = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      gender: data.gender,
+      email: data.email,
+      password: data.password,
+    };
+
+    const updatedUsers = [...users, newUser];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("rememberedEmail", data.email);
+
     router.push("/Home");
   };
 

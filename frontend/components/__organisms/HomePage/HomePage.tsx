@@ -1,12 +1,25 @@
 "use client"; // use client ჩავამატე რომ სტეიტი გამომეყენებინა
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Invoice from "../Invoice/Invoice";
 import EMailProf from "../../../Images/email.png";
+import { useRouter } from "next/router";
 
 const HomePage = () => {
   const [modal, setModal] = useState(false); // (k)
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn");
+    if (!loggedIn) router.push("/");
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    router.push("/");
+  };
 
   return (
     <div className="flex items-center justify-center w-full h-screen bg-[#F8F8FB]">
@@ -40,6 +53,22 @@ const HomePage = () => {
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <div className="flex items-center gap-6">
+            <button className="text-sm font-bold text-[#0C0E16] hover:opacity-70 flex items-center">
+              Filter by status
+              <span className="ml-2 text-xs">▼</span>
+            </button>
+
+            <button className="flex items-center gap-3 bg-[#7C5DFA] hover:bg-[#9277FF] text-white font-semibold py-[14px] px-[16px] rounded-full">
+              <span className="bg-white text-[#7C5DFA] rounded-full w-8 h-8 flex items-center justify-center text-xl">
+                +
+              </span>
+              <span className="text-sm font-bold">New Invoice</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
           <Image
             src={EMailProf}
             alt="Empty"
@@ -47,7 +76,6 @@ const HomePage = () => {
             height={200}
             className="mb-10"
           />
-
           <h2 className="text-[24px] font-bold text-[#0C0E16] mb-4">
             There is nothing here
           </h2>
@@ -57,6 +85,13 @@ const HomePage = () => {
             started
           </p>
         </div>
+
+        <button
+          onClick={handleLogout}
+          className="absolute bottom-6 right-6 text-sm bg-[#7C5DFA] hover:bg-[#9277FF] text-white px-4 py-2 rounded-md shadow"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
