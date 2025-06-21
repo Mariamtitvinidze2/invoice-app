@@ -1,108 +1,95 @@
 "use client";
 
-import React, { useState } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
+import { FormValue } from "@/components/__organisms/Invoice/Invoice";
 
-type FormValue = {
-  item: string;
-  quantity: string;
-  values: string;
+type Props = {
+  register: UseFormRegister<FormValue>;
+  errors: FieldErrors<FormValue>;
+  setValue: UseFormSetValue<FormValue>;
+  watch: UseFormWatch<FormValue>;
 };
 
-const schema = yup.object().shape({
-  values: yup.string().required(),
-  quantity: yup.string().required(),
-  item: yup.string().required(),
-});
+const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
+  const [price, setPrice] = useState("");
+  const quantity = watch("quantity");
 
-const PriceTotal = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormValue>({ resolver: yupResolver(schema) });
-  const [value, setValue] = useState("");
-  const [quantity, setQuantity] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/[^\d]/g, "");
+
     if (rawValue === "") {
-      setValue("");
+      setPrice("");
+      setValue("values", "");
       return;
     }
 
     const number = (parseFloat(rawValue) / 100).toFixed(2);
     const parts = number.split(".");
     const formatted = Number(parts[0]).toLocaleString();
-    setValue(`${formatted}.${parts[1]}`);
+    const finalValue = `${formatted}.${parts[1]}`;
+
+    setPrice(finalValue);
+    setValue("values", finalValue);
   };
 
-  const quantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const numbersOnly = raw.replace(/[^\d]/g, "");
-    setQuantity(numbersOnly);
-  };
+  const totalPrice = (
+    parseFloat(price.replace(/,/g, "")) * Number(quantity || 0)
+  ).toFixed(2);
+
+  useEffect(() => {
+    if (price && quantity) {
+      setValue("total", totalPrice);
+    } else {
+      setValue("total", "0.00");
+    }
+  }, [price, quantity, setValue, totalPrice]);
 
   return (
-    <>
-      <div className="flex flex-col ">
-        <input
-          type="text"
-          {...register("item")}
-          className={`w-[160px] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.item
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
-        />
-      </div>
+    <div className="flex gap-2">
+      <input
+        type="text"
+        {...register("item")}
+        className={`w-[160px] h-[40px] border rounded p-3 ${
+          errors.item ? "border-red-500" : "border-gray-300"
+        }`}
+      />
 
-      <div className="flex flex-col ">
-        <input
-          type="text"
-          value={quantity || ""}
-          {...register("quantity")}
-          className={`w-[49px] h-[40px] outline-1 border-1 rounded-[5px] text-center 
-                 ${
-                   errors.quantity
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
-          onChange={quantityChange}
-        />
-      </div>
+      <input
+        type="text"
+        {...register("quantity", {
+          onChange: (e) => {
+            const raw = e.target.value.replace(/[^\d]/g, "");
+            setValue("quantity", raw);
+          },
+        })}
+        value={quantity || ""}
+        className={`w-[59px] h-[40px] border rounded text-center ${
+          errors.quantity ? "border-red-500" : "border-gray-300"
+        }`}
+      />
 
-      <div className="flex flex-col ">
-        <input
-          type="text"
-          value={`$${value || ""}`}
-          placeholder="0.00"
-          {...register("values")}
-          className={`w-[80px] h-[40px] outline-1 border-1  p-3 rounded-[5px]
-                 ${
-                   errors.values
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
-          onChange={handleChange}
-        />
-      </div>
-      <div className="flex flex-row ">
-        <div className="w-[80px] h-[40px] outline-1 outline-[#DFE3FA]  border-[#DFE3FA] border-1 rounded-[5px] flex flex-col items-start pl-3 justify-center relative ">
-          <p>
-            $
-            {value && quantity
-              ? (
-                  parseFloat(value.replace(/,/g, "")) * Number(quantity)
-                ).toFixed(2)
-              : "0.00"}
-          </p>
-        </div>
-      </div>
-    </>
+      <input
+        type="text"
+        value={price}
+        onChange={handlePriceChange}
+        className={`w-[80px] h-[40px] border rounded text-center ${
+          errors.values ? "border-red-500" : "border-gray-300"
+        }`}
+      />
+
+      <input
+        type="text"
+        value={`$${quantity && price ? totalPrice : `0.00`}`}
+        readOnly
+        className="w-[80px] h-[40px] border rounded text-center border-gray-300"
+      />
+    </div>
   );
 };
 

@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Trash from "../../../Images/trash.png";
+import { watch } from "fs";
 
 type Props = {
   onDiscard: () => void;
@@ -17,7 +18,7 @@ type Item = {
   id: number;
 };
 
-type FormValue = {
+export type FormValue = {
   address: string;
   city: string;
   postcode: string;
@@ -30,6 +31,10 @@ type FormValue = {
   email: string;
   description: string;
   date: string;
+  item: string;
+  quantity: string;
+  values: string;
+  total: string;
 };
 
 const schema = yup.object().shape({
@@ -45,12 +50,18 @@ const schema = yup.object().shape({
   email: yup.string().required().email(),
   description: yup.string().required(),
   date: yup.string().required(),
+  values: yup.string().required(),
+  quantity: yup.string().required(),
+  item: yup.string().required(),
+  total: yup.string().required(),
 });
 
 const Invoice = ({ onDiscard }: Props) => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<FormValue>({ resolver: yupResolver(schema) });
   const [items, setItems] = useState<Item[]>([]);
@@ -361,7 +372,12 @@ const Invoice = ({ onDiscard }: Props) => {
             <div className="flex flex-col gap-3">
               {items.map((el, i) => (
                 <div key={i} className="w-[100%] flex flex-row gap-3 ">
-                  <PriceTotal />
+                  <PriceTotal
+                    watch={watch}
+                    register={register}
+                    errors={errors}
+                    setValue={setValue}
+                  />
                   <button type="button" onClick={() => deletItem(el.id)}>
                     <Image
                       src={Trash}
