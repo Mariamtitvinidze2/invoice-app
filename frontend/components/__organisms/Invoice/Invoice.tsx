@@ -64,10 +64,22 @@ const Invoice = ({ onDiscard }: Props) => {
     setItems((prev) => prev.filter((el) => el.id !== id));
   };
 
+  //ქეთო აქ ონსუბმითის ფუნქცია შევცვალე კი ინახებოდა ლოქალშ მაგრამ მასივში არა და თან მჭირდებოდა დიზაინის მიხედვით რაღაცეების დამატება ოდნავ შევცალე დიდი არაფერი <3
   const onSubmit = async (data: FormValue) => {
-    localStorage.setItem("Invoice", JSON.stringify(data));
+    const existingInvoices = JSON.parse(
+      localStorage.getItem("Invoices") || "[]"
+    );
+    const newInvoice = {
+      ...data,
+      id: Date.now(),
+      status: "Pending",
+      total: 402.33,
+    };
+    localStorage.setItem(
+      "Invoices",
+      JSON.stringify([...existingInvoices, newInvoice])
+    );
     setDiscard(true);
-    console.log(data, "data");
   };
 
   // const dataFromModal = localStorage.getItem("Invoice");
