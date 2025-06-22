@@ -7,6 +7,7 @@ import EMailProf from "../../../Images/email.png";
 import Image from "next/image";
 import Arrow from "../../../Images/arr.png";
 import InvoiceDetail from "../Invoice/InvoiceDetail";
+import { useTheme } from "../../ThemeContext";
 
 export type InvoiceData = {
   id: number;
@@ -31,7 +32,11 @@ export type InvoiceData = {
 };
 
 const HomePage = () => {
+  const { theme, toggleTheme } = useTheme();
   const [modal, setModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [invoices, setInvoices] = useState<InvoiceData[]>([]);
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceData | null>(
     null
@@ -55,11 +60,7 @@ const HomePage = () => {
     if (storedInvoices) {
       try {
         const parsedInvoices = JSON.parse(storedInvoices);
-        setInvoices(
-          parsedInvoices.map((invoice: any) => ({
-            ...invoice,
-          }))
-        );
+        setInvoices(parsedInvoices);
       } catch (error) {
         console.error("Error parsing invoices:", error);
       }
@@ -90,46 +91,98 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    router.push("/");
+    setShowLogoutModal(true);
   };
 
-  if (selectedInvoice) {
-    return (
-      <InvoiceDetail
-        invoice={selectedInvoice}
-        onBack={handleBack}
-        onStatusChange={handleStatusChange}
-        onDelete={handleDeleteInvoice}
-        onSave={handleSaveInvoice}
-      />
+  const toggleStatus = (status: string) => {
+    setSelectedStatuses((prev) =>
+      prev.includes(status)
+        ? prev.filter((s) => s !== status)
+        : [...prev, status]
     );
-  }
+  };
 
-  return (
+  const filteredInvoices = selectedStatuses.length
+    ? invoices.filter((inv) => selectedStatuses.includes(inv.status))
+    : invoices;
+
+  return selectedInvoice ? (
+    <InvoiceDetail
+      invoice={selectedInvoice}
+      onBack={handleBack}
+      onStatusChange={handleStatusChange}
+      onDelete={handleDeleteInvoice}
+      onSave={handleSaveInvoice}
+    />
+  ) : (
     <div
       className={`${
-        modal && `fixed`
-      } w-[100%] h-[100vh] flex items-start justify-center relative`}
+        modal && "fixed"
+      } w-full h-full min-h-screen flex items-start justify-center relative ${
+        theme === "dark" ? "bg-[#141625]" : "bg-[#F8F8FB]"
+      }`}
     >
       {modal && <Invoice onDiscard={() => setModal(false)} />}
-      <div
-        className={`"w-[700px] h-fit flex flex-col items-start justify-between mt-[50px] mb-8 "`}
-      >
-        <div className="w-[100%] flex flex-col items-center justify-between md:flex-row mb-8 ">
+
+      <div className="w-[700px] h-fit flex flex-col items-start justify-between mt-[50px] mb-8">
+        <div className="w-full flex flex-col items-center justify-between md:flex-row mb-8 relative">
           <div>
-            <h1 className="text-2xl md:text-[32px] font-bold text-[#0C0E16]   ">
+            <h1
+              className={`text-2xl md:text-[32px] font-bold ${
+                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+              }`}
+            >
               Invoices
             </h1>
-            <p className="text-sm text-[#888EB0] mt-1">
-              {invoices.length} invoice{invoices.length !== 1 ? "s" : ""} total
+            <p
+              className={`text-sm mt-1 ${
+                theme === "dark" ? "text-gray-300" : "text-[#888EB0]"
+              }`}
+            >
+              {filteredInvoices.length} invoice
+              {filteredInvoices.length !== 1 ? "s" : ""} total
             </p>
           </div>
+
           <div className="flex items-center gap-4 md:gap-6">
-            <button className="text-sm font-bold text-[#0C0E16] hover:opacity-70 flex items-center">
-              Filter by status
-              <span className="ml-2 text-xs">▼</span>
-            </button>
+            <div className="relative">
+              <button
+                className={`text-sm font-bold hover:opacity-70 cursor-pointer flex items-center ${
+                  theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                }`}
+                onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+              >
+                Filter by status
+                <span className="ml-2 text-xs">▼</span>
+              </button>
+
+              {showFilterDropdown && (
+                <div
+                  className={`absolute z-10 mt-2 w-[180px] ml-[-36px] flex h-[100px] flex-col rounded-md p-6 border shadow-md ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945]"
+                      : "bg-white border-gray-200"
+                  }`}
+                >
+                  {["Pending", "Paid"].map((status) => (
+                    <label
+                      key={status}
+                      className={`flex items-center gap-2 text-sm mb-2 ${
+                        theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedStatuses.includes(status)}
+                        onChange={() => toggleStatus(status)}
+                      />
+                      {status}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => setModal(true)}
               className="flex items-center justify-start gap-2 md:gap-4 cursor-pointer bg-[#7C5DFA] hover:bg-[#9277FF] text-white font-semibold py-[8px] px-3 md:px-[15px] rounded-full"
@@ -145,50 +198,76 @@ const HomePage = () => {
           </div>
         </div>
 
-        {invoices.length > 0 ? (
-          <div className="w-[100%] flex items-start flex-col gap-4">
-            {invoices.map((inv) => (
+        {filteredInvoices.length > 0 ? (
+          <div className="w-[800px] flex items-start flex-col gap-4">
+            {filteredInvoices.map((inv) => (
               <div
                 key={inv.id}
                 onClick={() => handleInvoiceClick(inv)}
-                className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-white rounded-lg shadow w-[100%]  cursor-pointer hover:shadow-md transition"
+                className={`flex flex-col md:flex-row justify-between items-start md:items-center p-6 w-full cursor-pointer hover:shadow-md transition
+                  ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] shadow-[0px_10px_10px_-10px_rgba(72,84,159,0.10)]"
+                      : "bg-white shadow"
+                  }
+                `}
               >
-                <div className="flex flex-row justify-between w-[100%] ">
-                  <div className="w-[110px]  ">
-                    <span className="font-semibold text-[#0C0E16]">
+                <div className="flex flex-row justify-between w-full">
+                  <div
+                    className={`${
+                      theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                    } w-[110px]`}
+                  >
+                    <span className="font-semibold">
                       #{inv.id.toString().slice(-6)}
                     </span>
-                    <span className="text-[#888EB0] md:hidden">{inv.name}</span>
-                  </div>
-
-                  <div className="w-[130px] ">
-                    <span className="text-[#888EB0]">
-                      Due {new Date(inv.date).toLocaleDateString()}
-                    </span>
-                    <span className="text-[#0C0E16] font-bold md:hidden"></span>
-                  </div>
-
-                  <div className=" w-[120px] ">
-                    <span className="text-[#0C0E16] font-semibold">
+                    <span className="md:hidden block text-gray-400">
                       {inv.name}
                     </span>
                   </div>
 
-                  <div className="w-[100px] ">
-                    <span className="text-[#0C0E16] font-bold">
-                      ${inv.total}
-                    </span>
+                  <div
+                    className={`${
+                      theme === "dark" ? "text-gray-300" : "text-[#888EB0]"
+                    } w-[130px]`}
+                  >
+                    Due {new Date(inv.date).toLocaleDateString()}
+                  </div>
+
+                  <div
+                    className={`${
+                      theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                    } w-[120px] font-semibold`}
+                  >
+                    {inv.name}
+                  </div>
+
+                  <div
+                    className={`${
+                      theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                    } w-[100px] font-bold`}
+                  >
+                    ${inv.total}
                   </div>
                 </div>
 
                 <div
-                  className={`px-3 py-1 rounded-md text-sm mt-4 md:mt-0 text-center  w-[110px]  ${
+                  className={`px-3 py-1 mt-4 md:mt-0 text-center w-[110px] rounded-md text-sm font-[League Spartan] font-bold leading-[15px] tracking-[-0.25px] ${
                     inv.status === "Pending"
-                      ? "bg-yellow-100 text-yellow-700"
+                      ? theme === "dark"
+                        ? "border border-[#FF8F00] bg-[#FF8F00]/5 text-[#FF8F00] opacity-[0.57]"
+                        : "bg-yellow-100 text-yellow-700"
                       : inv.status === "Paid"
-                      ? "bg-green-100 text-green-700"
+                      ? theme === "dark"
+                        ? "border border-[#33D69F] bg-[#33D69F]/5 text-[#33D69F] opacity-[0.57]"
+                        : "bg-green-100 text-green-700"
                       : "bg-gray-100 text-gray-700"
                   }`}
+                  style={{
+                    borderRadius: "6px",
+                    fontSize: "15px",
+                    lineHeight: "15px",
+                  }}
                 >
                   ● {inv.status}
                 </div>
@@ -204,34 +283,83 @@ const HomePage = () => {
             ))}
           </div>
         ) : (
-          <div className=" h-[100px] flex flex-col items-center justify-center text-center  ">
-            <div className="text-center flex items-center flex-col justify-center gap-4 mt-[300px] ml-[200px] ">
-              <Image
-                src={EMailProf}
-                alt="Empty"
-                width={240}
-                height={200}
-                priority
-                className=" "
-              />
-              <h2 className="text-2xl font-bold text-[#0C0E16]  ">
-                There is nothing here
-              </h2>
-              <p className="text-sm text-[#888EB0]   ">
-                Create an invoice by clicking the <br />
-                <span className="font-semibold">New Invoice</span> button and
-                get started
-              </p>
-            </div>
+          <div className="flex flex-col items-center justify-center text-center mt-[200px] ml-[200px]">
+            <Image
+              src={EMailProf}
+              alt="Empty"
+              width={240}
+              height={200}
+              priority
+            />
+            <h2
+              className={`${
+                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+              } text-2xl font-bold mt-4`}
+            >
+              There is nothing here
+            </h2>
+            <p
+              className={`${
+                theme === "dark" ? "text-gray-300" : "text-[#888EB0]"
+              } text-sm mt-2`}
+            >
+              Create an invoice by clicking the <br />
+              <span className="font-semibold">New Invoice</span> button and get
+              started
+            </p>
           </div>
         )}
-
         <button
           onClick={handleLogout}
-          className="fixed bottom-6 right-6 text-sm bg-[#7C5DFA] hover:bg-[#9277FF] text-white px-4 py-2 rounded-md shadow"
+          className="fixed bottom-6 right-6 text-sm bg-[#7C5DFA] hover:bg-[#9277FF] text-white px-4 py-2 cursor-pointer rounded-md shadow"
         >
           Logout
         </button>
+        {showLogoutModal && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+            <div
+              className={`rounded-xl p-6 w-[320px] shadow-lg text-center ${
+                theme === "dark" ? "bg-[#1E2139]" : "bg-white"
+              }`}
+            >
+              <h3
+                className={`text-lg font-semibold mb-3 ${
+                  theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                }`}
+              >
+                Log out?
+              </h3>
+              <p
+                className={`text-sm mb-6 ${
+                  theme === "dark" ? "text-gray-300" : "text-[#888EB0]"
+                }`}
+              >
+                Are you sure you want to log out?
+              </p>
+              <div className="flex justify-between gap-4">
+                <button
+                  onClick={() => {
+                    localStorage.removeItem("isLoggedIn");
+                    router.push("/");
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md w-full"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setShowLogoutModal(false)}
+                  className={`py-2 px-4 rounded-md w-full ${
+                    theme === "dark"
+                      ? "bg-[#252945] hover:bg-[#333752] text-white"
+                      : "bg-gray-200 hover:bg-gray-300 text-[#0C0E16]"
+                  }`}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

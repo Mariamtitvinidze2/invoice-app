@@ -4,9 +4,11 @@ import Image from "next/image";
 import React, { useState } from "react";
 import left from "../../../Images/left.png";
 import Right from "../../../Images/right.png";
+import { useTheme } from "../../ThemeContext";
 
 const PaymentTerms = () => {
   const [modal, setModal] = useState<boolean>(false);
+  const { theme } = useTheme();
 
   const date = ["Net 1 Day", "Net 7 Days", "Net 14 Days", "Net 30 Days"];
   const [selectDate, setSelectDate] = useState(date[3]);
@@ -14,7 +16,13 @@ const PaymentTerms = () => {
   return (
     <div>
       <div className="flex flex-col relative ">
-        <p className="text-[#7E88C3] mb-1  text-sm">Payment Terms</p>
+        <p
+          className={`mb-1 text-sm ${
+            theme === "dark" ? "text-white" : "text-[#7E88C3]"
+          }`}
+        >
+          Payment Terms
+        </p>
 
         <div
           className={`w-[220px] h-[40px] border-1 outline-1 ${

@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
+import { useRouter, usePathname } from "next/navigation";
 
 interface User {
   email: string;
@@ -15,7 +16,6 @@ interface User {
 type FormData = {
   email: string;
   password: string;
-  repeatPassword: string;
 };
 
 const validationSchema = Yup.object().shape({
@@ -24,13 +24,10 @@ const validationSchema = Yup.object().shape({
     .min(6, "Minimum 6 characters")
     .max(20, "Maximum 20 characters")
     .required("Password is required"),
-  repeatPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Repeat your password"),
 });
-
 const Signin = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [submitError, setSubmitError] = useState("");
 
   const {
@@ -42,11 +39,11 @@ const Signin = () => {
     resolver: yupResolver(validationSchema),
   });
   useEffect(() => {
-    const loggedIn = localStorage.getItem("isLoggedIn");
-    if (loggedIn === "true") {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
       router.push("/Home");
     }
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
@@ -91,16 +88,6 @@ const Signin = () => {
           />
           <p className="text-sm text-red-500 mb-2">
             {errors.password?.message}
-          </p>
-
-          <input
-            type="password"
-            placeholder="Repeat Password"
-            {...register("repeatPassword")}
-            className="h-11 px-4 mb-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-white"
-          />
-          <p className="text-sm text-red-500 mb-4">
-            {errors.repeatPassword?.message}
           </p>
 
           {submitError && (

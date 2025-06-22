@@ -8,6 +8,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Trash from "../../../Images/trash.png";
+import { useTheme } from "../../ThemeContext";
+
 import { watch } from "fs";
 
 type Props = {
@@ -57,6 +59,8 @@ const schema = yup.object().shape({
 });
 
 const Invoice = ({ onDiscard }: Props) => {
+  const { theme } = useTheme();
+
   const {
     register,
     handleSubmit,
@@ -103,12 +107,24 @@ const Invoice = ({ onDiscard }: Props) => {
   }, [discard]);
 
   return (
-    <div className=" bg-gray-900/60 w-[100%] z-20 h-full absolute ">
+    <div
+      className={`w-full z-20 h-full absolute ${
+        theme === "dark" ? "bg-black/70" : "bg-gray-900/60"
+      }`}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-[50%] pl-[110px] top-0 left-0 h-[100vh] flex flex-col justify-start p-[20px] pr-[1.7px] rounded-r-[30px] bg-white absolute "
+        className={`w-[50%] pl-[110px] top-0 left-0 h-[100vh] flex flex-col justify-start p-[20px] pr-[1.7px] rounded-r-[30px] absolute overflow-y-auto ${
+          theme === "dark" ? "bg-[#141625] text-white" : "bg-white text-black"
+        }`}
       >
-        <div className=" overflow-y-auto pr-5">
+        <div
+          className={`overflow-y-auto pr-5 scrollbar scrollbar-thin ${
+            theme === "dark"
+              ? "scrollbar-thumb-[#555] scrollbar-track-[#1E2139]"
+              : "scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+          }`}
+        >
           <h1 className="font-[inter] font-semibold text-3xl mb-7 ">
             New Invoice
           </h1>
@@ -125,25 +141,37 @@ const Invoice = ({ onDiscard }: Props) => {
             </h3>
 
             <div>
-              <label htmlFor="address" className="text-[#7E88C3] mb-1  text-sm">
+              <label
+                htmlFor="address"
+                className={`mb-1 text-sm ${
+                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                }`}
+              >
                 Street Address
               </label>
+
               <input
                 type="text"
                 id="address"
                 {...register("address")}
-                className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-none ${
+                  errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
 
             <div className="w-[100%] flex flex-row justify-between gap-4 ">
               <div className="flex flex-col">
-                <label htmlFor="city" className="text-[#7E88C3] mb-1  text-sm">
+                <label
+                  htmlFor="city"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
+                >
                   City
                 </label>
                 <input
@@ -152,17 +180,21 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("city")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.city
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
 
               <div className="flex flex-col">
                 <label
                   htmlFor="postcode"
-                  className="text-[#7E88C3] mb-1  text-sm"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
                 >
                   Post Code
                 </label>
@@ -172,17 +204,21 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("postcode")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.postcode
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
 
               <div className="flex flex-col ">
                 <label
                   htmlFor="country"
-                  className="text-[#7E88C3] mb-1  text-sm"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
                 >
                   Country
                 </label>
@@ -192,10 +228,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("country")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.country
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
             </div>
@@ -207,7 +245,12 @@ const Invoice = ({ onDiscard }: Props) => {
             </h3>
 
             <div>
-              <label htmlFor="name" className="text-[#7E88C3] mb-1  text-sm">
+              <label
+                htmlFor="name"
+                className={`mb-1 text-sm ${
+                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                }`}
+              >
                 Client's Name
               </label>
               <input
@@ -216,15 +259,22 @@ const Invoice = ({ onDiscard }: Props) => {
                 {...register("name")}
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.name
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="text-[#7E88C3] mb-1  text-sm">
+              <label
+                htmlFor="email"
+                className={`mb-1 text-sm ${
+                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                }`}
+              >
                 Client's Email
               </label>
               <input
@@ -234,17 +284,21 @@ const Invoice = ({ onDiscard }: Props) => {
                 placeholder="e.g. email@example.com"
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.email
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
 
             <div>
               <label
                 htmlFor="addressTwo"
-                className="text-[#7E88C3] mb-1  text-sm"
+                className={`mb-1 text-sm ${
+                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                }`}
               >
                 Street Address
               </label>
@@ -254,10 +308,12 @@ const Invoice = ({ onDiscard }: Props) => {
                 {...register("addressTwo")}
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.addressTwo
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
 
@@ -265,7 +321,9 @@ const Invoice = ({ onDiscard }: Props) => {
               <div className="flex flex-col">
                 <label
                   htmlFor="cityTwo"
-                  className="text-[#7E88C3] mb-1  text-sm"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
                 >
                   City
                 </label>
@@ -285,7 +343,9 @@ const Invoice = ({ onDiscard }: Props) => {
               <div className="flex flex-col">
                 <label
                   htmlFor="postcodeTwo"
-                  className="text-[#7E88C3] mb-1  text-sm"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
                 >
                   Post Code
                 </label>
@@ -295,17 +355,21 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("postcodeTwo")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.postcodeTwo
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
 
               <div className="flex flex-col ">
                 <label
                   htmlFor="countryTwo"
-                  className="text-[#7E88C3] mb-1  text-sm"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
                 >
                   Country
                 </label>
@@ -315,17 +379,24 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("countryTwo")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.countryTwo
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
             </div>
 
             <div className="w-[100%] flex flex-row justify-between gap-4 mt-2 ">
               <div className="flex flex-col ">
-                <label htmlFor="date" className="text-[#7E88C3] mb-1  text-sm">
+                <label
+                  htmlFor="date"
+                  className={`mb-1 text-sm ${
+                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  }`}
+                >
                   Invoice Date
                 </label>
                 <input
@@ -334,10 +405,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("date")}
                   className={`w-[210px] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.date
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                    theme === "dark"
+                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      : "bg-white text-black"
+                  }`}
                 />
               </div>
 
@@ -347,7 +420,9 @@ const Invoice = ({ onDiscard }: Props) => {
             <div className="flex flex-col mt-2 ">
               <label
                 htmlFor="description"
-                className="text-[#7E88C3] text-sm mb-1"
+                className={`mb-1 text-sm ${
+                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                }`}
               >
                 Project Description
               </label>
@@ -358,10 +433,12 @@ const Invoice = ({ onDiscard }: Props) => {
                 placeholder="e.g. Graphic Design"
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.description
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                 } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
           </div>
@@ -380,7 +457,7 @@ const Invoice = ({ onDiscard }: Props) => {
 
             <div className="flex flex-col gap-3">
               {items.map((el, i) => (
-                <div key={i} className="w-[100%] flex flex-row gap-3 ">
+                <div key={i} className="w-full flex flex-row gap-3">
                   <PriceTotal
                     watch={watch}
                     register={register}
@@ -394,7 +471,7 @@ const Invoice = ({ onDiscard }: Props) => {
                       height={30}
                       width={20}
                       priority
-                      className="right-11 bottom-24 w-[25px] h-[25px] mt-[6px] ml-[15px] cursor-pointer "
+                      className="w-[25px] h-[25px] mt-[6px] ml-[15px] cursor-pointer"
                     />
                   </button>
                 </div>
@@ -404,28 +481,34 @@ const Invoice = ({ onDiscard }: Props) => {
             <button
               type="button"
               onClick={newItem}
-              className="w-[100%] h-[50px] bg-gray-100 cursor-pointer mt-4 hover:bg-gray-200 rounded-full text-center font-[inter] font-semibold text-purple-400 "
+              className={`w-full h-[50px] mt-4 rounded-full text-center font-[inter] font-semibold cursor-pointer ${
+                theme === "dark"
+                  ? "bg-[#1E2139] text-[#7C5DFA] hover:bg-[#252945]"
+                  : "bg-gray-100 text-purple-400 hover:bg-gray-200"
+              }`}
             >
               + Add New Item
             </button>
           </div>
 
-          <div className="w-[100%] h-[70px] flex flex-row items-center justify-between mt-10">
+          <div className="w-full h-[70px] flex flex-row items-center justify-between mt-10">
             <button
               onClick={() => setDiscard(true)}
-              className="w-[110px] h-[50px] hover:w-[115px] hover:h-[55px] rounded-full bg-gray-400 hover:bg-red-700 text-white cursor-pointer "
+              className={`w-[110px] h-[50px] rounded-full text-white cursor-pointer ${
+                theme === "dark"
+                  ? "bg-gray-500 hover:bg-red-600"
+                  : "bg-gray-400 hover:bg-red-700"
+              }`}
             >
               Discard
             </button>
 
-            <div className="">
-              <button
-                type="submit"
-                className="w-[130px] h-[50px] hover:w-[135px] hover:h-[55px] hover:bg-purple-500 rounded-full cursor-pointer bg-purple-600 text-white "
-              >
-                Save & Send
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="w-[130px] h-[50px] rounded-full cursor-pointer bg-purple-600 hover:bg-purple-500 text-white"
+            >
+              Save & Send
+            </button>
           </div>
         </div>
       </form>
