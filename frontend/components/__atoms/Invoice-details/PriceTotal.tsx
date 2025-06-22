@@ -55,8 +55,8 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
       <input
         type="text"
         {...register("item")}
-        className={`w-[160px] h-[40px] border rounded p-3 ${
-          errors.item ? "border-red-500" : "border-gray-300"
+        className={`w-[160px] h-[40px] border-1 outline-1 rounded p-3 ${
+          errors.item ? "border-red-500" : "outline-[#DFE3FA] border-[#DFE3FA]"
         }`}
       />
 
@@ -69,8 +69,10 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
           },
         })}
         value={quantity || ""}
-        className={`w-[59px] h-[40px] border rounded text-center ${
-          errors.quantity ? "border-red-500" : "border-gray-300"
+        className={`w-[59px] h-[40px] border-1 outline-1  rounded text-center ${
+          errors.quantity
+            ? "border-red-500"
+            : "outline-[#DFE3FA]  border-[#DFE3FA]"
         }`}
       />
 
@@ -79,8 +81,10 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
         value={`$${price}`}
         {...register("values")}
         onChange={handlePriceChange}
-        className={`w-[80px] h-[40px] border rounded text-center ${
-          errors.values ? "border-red-500" : "border-gray-300"
+        className={`w-[80px] h-[40px] border-1 outline-1 rounded text-center ${
+          errors.values
+            ? "border-red-500"
+            : "outline-[#DFE3FA]  border-[#DFE3FA]"
         }`}
       />
 
@@ -89,7 +93,7 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
         value={`$${quantity && price ? totalPrice : `0.00`}`}
         {...register("total")}
         readOnly
-        className="w-[80px] h-[40px] border rounded text-center border-gray-300"
+        className="w-[80px] h-[40px] border-1 outline-1  rounded text-center outline-[#DFE3FA]  border-[#DFE3FA]"
       />
     </div>
   );

@@ -158,16 +158,17 @@ const HomePage = () => {
 
               {showFilterDropdown && (
                 <div
-                  className={`absolute z-10 mt-2 w-[180px] ml-[-36px] flex h-[100px] flex-col rounded-md p-6 border shadow-md ${
+                  className={`absolute z-10 mt-2 w-[130px]  flex h-[100px] flex-col rounded-md border shadow-md ${
                     theme === "dark"
                       ? "bg-[#1E2139] border-[#252945]"
                       : "bg-white border-gray-200"
-                  }`}
+                  }  `}
                 >
+                  <div className="w-[130px] bg-gray-300 h-[1px] absolute top-12 "></div>
                   {["Pending", "Paid"].map((status) => (
                     <label
                       key={status}
-                      className={`flex items-center gap-2 text-sm mb-2 ${
+                      className={`flex items-center gap-2 mb-2 cursor-pointer pl-3 pt-2 font-[inter] font-semibold text-[20px]  ${
                         theme === "dark" ? "text-white" : "text-[#0C0E16]"
                       }`}
                     >
@@ -175,6 +176,7 @@ const HomePage = () => {
                         type="checkbox"
                         checked={selectedStatuses.includes(status)}
                         onChange={() => toggleStatus(status)}
+                        className="cursor-pointer  "
                       />
                       {status}
                     </label>
@@ -199,12 +201,12 @@ const HomePage = () => {
         </div>
 
         {filteredInvoices.length > 0 ? (
-          <div className="w-[800px] flex items-start flex-col gap-4">
+          <div className="w-[700px] flex items-start flex-col rounded-[23px] gap-4">
             {filteredInvoices.map((inv) => (
               <div
                 key={inv.id}
                 onClick={() => handleInvoiceClick(inv)}
-                className={`flex flex-col md:flex-row justify-between items-start md:items-center p-6 w-full cursor-pointer hover:shadow-md transition
+                className={`flex flex-col md:flex-row justify-between rounded-[11px]  items-start md:items-center p-6 w-full cursor-pointer hover:shadow-md transition
                   ${
                     theme === "dark"
                       ? "bg-[#1E2139] shadow-[0px_10px_10px_-10px_rgba(72,84,159,0.10)]"
@@ -212,11 +214,11 @@ const HomePage = () => {
                   }
                 `}
               >
-                <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-row justify-between w-[85%]">
                   <div
                     className={`${
                       theme === "dark" ? "text-white" : "text-[#0C0E16]"
-                    } w-[110px]`}
+                    } w-[70px]`}
                   >
                     <span className="font-semibold">
                       #{inv.id.toString().slice(-6)}
@@ -229,7 +231,7 @@ const HomePage = () => {
                   <div
                     className={`${
                       theme === "dark" ? "text-gray-300" : "text-[#888EB0]"
-                    } w-[130px]`}
+                    } w-[124px]`}
                   >
                     Due {new Date(inv.date).toLocaleDateString()}
                   </div>
@@ -237,7 +239,7 @@ const HomePage = () => {
                   <div
                     className={`${
                       theme === "dark" ? "text-white" : "text-[#0C0E16]"
-                    } w-[120px] font-semibold`}
+                    } w-[145px] font-semibold`}
                   >
                     {inv.name}
                   </div>
@@ -252,7 +254,7 @@ const HomePage = () => {
                 </div>
 
                 <div
-                  className={`px-3 py-1 mt-4 md:mt-0 text-center w-[110px] rounded-md text-sm font-[League Spartan] font-bold leading-[15px] tracking-[-0.25px] ${
+                  className={`p-[14px] flex items-center  md:mt-0 text-center w-[100px] h-[20px] rounded-md text-sm font-[inter] font-bold   ${
                     inv.status === "Pending"
                       ? theme === "dark"
                         ? "border border-[#FF8F00] bg-[#FF8F00]/5 text-[#FF8F00] opacity-[0.57]"
@@ -263,11 +265,6 @@ const HomePage = () => {
                         : "bg-green-100 text-green-700"
                       : "bg-gray-100 text-gray-700"
                   }`}
-                  style={{
-                    borderRadius: "6px",
-                    fontSize: "15px",
-                    lineHeight: "15px",
-                  }}
                 >
                   ● {inv.status}
                 </div>
@@ -283,7 +280,7 @@ const HomePage = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center text-center mt-[200px] ml-[200px]">
+          <div className="flex flex-col items-center justify-center text-center mt-[60px] ml-[200px]">
             <Image
               src={EMailProf}
               alt="Empty"

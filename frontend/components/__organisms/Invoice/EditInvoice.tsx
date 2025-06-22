@@ -180,11 +180,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                 type="text"
                 id="address"
                 {...register("address")}
-                className={`w-full h-[40px] rounded-[5px] p-3 border outline-none ${
-                  errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
                 } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -204,12 +206,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="city"
                   {...register("city")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -228,12 +231,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="postcode"
                   {...register("postcode")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -252,12 +256,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="country"
                   {...register("country")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -278,12 +283,15 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                 type="text"
                 id="name"
                 {...register("name")}
-                className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.name
-                     ? `outline-[#ff0000] border-[#ff0000]`
-                     : `outline-[#DFE3FA] border-[#DFE3FA]`
-                 } `}
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
+                } ${
+                  theme === "dark"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
+                    : "bg-white text-black"
+                }`}
               />
             </div>
 
@@ -300,12 +308,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                 type="text"
                 id="name"
                 {...register("name")}
-                className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
+                } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -325,12 +334,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                 id="email"
                 {...register("email")}
                 placeholder="e.g. email@example.com"
-                className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
+                } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -350,12 +360,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="cityTwo"
                   {...register("cityTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -374,12 +385,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="postcodeTwo"
                   {...register("postcodeTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -398,12 +410,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="text"
                   id="countryTwo"
                   {...register("countryTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -424,12 +437,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                   type="date"
                   id="date"
                   {...register("date")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                  className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                    errors.address
+                      ? "border-red-500"
+                      : "border-[#DFE3FA] outline-[#DFE3FA]"
+                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -452,12 +466,13 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
                 id="description"
                 {...register("description")}
                 placeholder="e.g. Graphic Design"
-                className={`w-[100%] h-[40px] outline-1 border-1
-                 rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
-                 } ${
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
+                } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />

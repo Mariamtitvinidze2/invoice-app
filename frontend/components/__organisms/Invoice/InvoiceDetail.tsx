@@ -52,7 +52,7 @@ const InvoiceDetail = ({
       <div className="w-[700px]">
         <button
           onClick={onBack}
-          className={`flex items-center cursor-pointer gap-2 mb-5 text-sm font-semibold font-inter hover:opacity-70 ${
+          className={`flex items-center cursor-pointer gap-2 mb-5 font-semibold font-[inter] hover:opacity-70 ${
             theme === "dark" ? "text-white" : "text-[#0C0E16]"
           }`}
         >
@@ -68,7 +68,7 @@ const InvoiceDetail = ({
             boxShadow: "0px 10px 10px -10px rgba(72, 84, 159, 0.10)",
           }}
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 font-[inter] font-semibold   ">
             <span
               className={theme === "dark" ? "text-white" : "text-[#0C0E16]"}
             >
@@ -100,20 +100,20 @@ const InvoiceDetail = ({
           <div className="flex gap-2">
             <button
               onClick={() => setEditInvoice(true)}
-              className="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium"
+              className="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-full font-[inter] font-semibold "
             >
               Edit
             </button>
             <button
               onClick={() => setShowConfirmModal(true)}
-              className="px-4 py-2  cursor-pointer  bg-red-400 hover:bg-red-200 rounded-full text-sm font-medium text-red-800"
+              className="px-4 py-2  cursor-pointer  bg-red-500 hover:bg-red-200 rounded-full font-[inter] font-semibold  text-white"
             >
               Delete
             </button>
             {currentStatus === "Pending" && (
               <button
                 onClick={handleMarkAsPaid}
-                className="px-4 py-2 bg-[#7C5DFA]  cursor-pointer  hover:bg-[#9277FF] rounded-full text-sm font-medium text-white"
+                className="px-4 py-2 bg-[#7C5DFA]  cursor-pointer  hover:bg-[#9277FF] rounded-full font-[inter] font-semibold  text-white"
               >
                 Mark as Paid
               </button>
@@ -148,9 +148,8 @@ const InvoiceDetail = ({
               }`}
             >
               <div>
-                <h2 className="text-xl font-bold">
-                  <span className="text-[#c2c7e2] font-normal">#</span>
-                  {invoiceData.id.toString().slice(-6)}
+                <h2 className="text-xl font-semibold font-[inter]  ">
+                  #{invoiceData.id.toString().slice(-6)}
                 </h2>
                 <p className="text-[#c2c7e2]">{invoice.description}</p>
               </div>
@@ -224,19 +223,23 @@ const InvoiceDetail = ({
           </div>
 
           <div
-            className={`${
-              theme === "dark" ? "bg-[#252945]" : "bg-[#F9FAFF]"
-            } w-full h-[100px] pl-6 pr-6 pt-5 rounded-t-lg`}
+            className={` w-[100%] p-6  flex flex-col justify-between  gap-4  ${
+              theme === "dark" ? "bg-[#252945]" : "bg-[#f2f4fa] "
+            } rounded-t-lg`}
           >
             <div
-              className={`hidden md:grid grid-cols-4 gap-4 mb-3 font-medium ${
+              className={`w-[80%] flex flex-row justify-between  font-semibold font-[inter] ${
                 theme === "dark" ? "text-white" : "text-[#0C0E16]"
               }`}
             >
-              <p>Item Name</p>
-              <p className="text-right">QTY.</p>
-              <p className="text-right">Price</p>
-              <p className="text-right">Total</p>
+              <div className="w-[38%] flex flex-row justify-between itemc-center ">
+                <p>Item Name</p>
+                <p className="">QTY.</p>
+              </div>
+              <div className="w-[38%] flex flex-row justify-between md:gap-[160px] ">
+                <p className="">Price</p>
+                <p className="">Total</p>
+              </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4">
               <div
@@ -246,10 +249,18 @@ const InvoiceDetail = ({
               >
                 {invoiceData.item}
               </div>
-              <div className="hidden md:block mr-5 text-right text-white">
+              <div
+                className={`md:col-span-1 font-bold ${
+                  theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                }`}
+              >
                 {invoiceData.quantity}
               </div>
-              <div className="hidden md:block text-right text-white">
+              <div
+                className={`md:col-span-1 font-bold ${
+                  theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                }`}
+              >
                 {invoiceData.values}
               </div>
               <div
@@ -263,20 +274,21 @@ const InvoiceDetail = ({
           </div>
 
           <div
-            className={`rounded-b-lg p-6 flex justify-between items-center ${
-              theme === "dark" ? "bg-[#0C0E16]" : "bg-[#F1F3FF]"
+            className={`rounded-b-lg p-7 flex justify-between items-center   ${
+              theme === "dark" ? "bg-[#F1F3FF]" : "bg-[#373B53] "
             }`}
           >
             <p
-              className={`text-sm ${
-                theme === "dark" ? "text-white" : "text-[#0C0E16]"
-              }`}
+              // className={`font-semibold font-[inter]${
+              //   theme === "dark" ? "text-white" : "text-white"
+              // }`}
+              className="text-white font-semibold font-[inter] text-[23px]"
             >
               Amount Due
             </p>
             <p
-              className={`text-2xl font-bold ${
-                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+              className={`font-semibold font-[inter] text-white text-[23px] ${
+                theme === "dark" && "bg-[#373B53]"
               }`}
             >
               ${invoiceData.total}

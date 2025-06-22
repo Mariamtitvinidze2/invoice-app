@@ -154,11 +154,13 @@ const Invoice = ({ onDiscard }: Props) => {
                 type="text"
                 id="address"
                 {...register("address")}
-                className={`w-full h-[40px] rounded-[5px] p-3 border outline-none ${
-                  errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                className={`w-full h-[40px] rounded-[5px] p-3 border outline-1 ${
+                  errors.address
+                    ? "border-red-500"
+                    : "border-[#DFE3FA] outline-[#DFE3FA]"
                 } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -180,10 +182,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("city")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -204,10 +208,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("postcode")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -217,7 +223,7 @@ const Invoice = ({ onDiscard }: Props) => {
                 <label
                   htmlFor="country"
                   className={`mb-1 text-sm ${
-                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                    theme === "dark" ? "text-white" : "text-[#7E88C3] "
                   }`}
                 >
                   Country
@@ -228,10 +234,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("country")}
                   className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -259,10 +267,12 @@ const Invoice = ({ onDiscard }: Props) => {
                 {...register("name")}
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -272,7 +282,7 @@ const Invoice = ({ onDiscard }: Props) => {
               <label
                 htmlFor="email"
                 className={`mb-1 text-sm ${
-                  theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                  theme === "dark" ? "text-white" : "text-[#7E88C3] "
                 }`}
               >
                 Client's Email
@@ -282,12 +292,14 @@ const Invoice = ({ onDiscard }: Props) => {
                 id="email"
                 {...register("email")}
                 placeholder="e.g. email@example.com"
-                className={`w-[100%] h-[40px] outline-1 border-1
+                className={`w-[100%] h-[40px] outline-1 border-1 
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -308,10 +320,12 @@ const Invoice = ({ onDiscard }: Props) => {
                 {...register("addressTwo")}
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
@@ -331,7 +345,7 @@ const Invoice = ({ onDiscard }: Props) => {
                   type="text"
                   id="cityTwo"
                   {...register("cityTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
+                  className={`w-[100%] h-[40px] outline-1 border-1 outline-[#DFE3FA]
                  rounded-[5px] p-3 ${
                    errors.cityTwo
                      ? `outline-[#ff0000] border-[#ff0000]`
@@ -344,7 +358,7 @@ const Invoice = ({ onDiscard }: Props) => {
                 <label
                   htmlFor="postcodeTwo"
                   className={`mb-1 text-sm ${
-                    theme === "dark" ? "text-white" : "text-[#7E88C3]"
+                    theme === "dark" ? "text-white " : "text-[#7E88C3]"
                   }`}
                 >
                   Post Code
@@ -353,12 +367,14 @@ const Invoice = ({ onDiscard }: Props) => {
                   type="text"
                   id="postcodeTwo"
                   {...register("postcodeTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
+                  className={`w-[100%] h-[40px] outline-1 border-1 
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -377,12 +393,14 @@ const Invoice = ({ onDiscard }: Props) => {
                   type="text"
                   id="countryTwo"
                   {...register("countryTwo")}
-                  className={`w-[100%] h-[40px] outline-1 border-1
+                  className={`w-[100%] h-[40px] outline-1 border-1 
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -405,10 +423,12 @@ const Invoice = ({ onDiscard }: Props) => {
                   {...register("date")}
                   className={`w-[210px] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                     theme === "dark"
-                      ? "bg-[#1E2139] border-[#252945] text-white"
+                      ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                       : "bg-white text-black"
                   }`}
                 />
@@ -433,10 +453,12 @@ const Invoice = ({ onDiscard }: Props) => {
                 placeholder="e.g. Graphic Design"
                 className={`w-[100%] h-[40px] outline-1 border-1
                  rounded-[5px] p-3 ${
-                   errors.address ? "border-red-500" : "border-[#DFE3FA]"
+                   errors.address
+                     ? "border-red-500"
+                     : "border-[#DFE3FA] outline-[#DFE3FA]"
                  } ${
                   theme === "dark"
-                    ? "bg-[#1E2139] border-[#252945] text-white"
+                    ? "bg-[#1E2139] border-[#252945] outline-none text-white"
                     : "bg-white text-black"
                 }`}
               />
