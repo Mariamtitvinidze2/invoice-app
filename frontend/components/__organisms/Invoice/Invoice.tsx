@@ -75,29 +75,26 @@ const Invoice = ({ onDiscard }: Props) => {
     setItems((prev) => prev.filter((el) => el.id !== id));
   };
 
-  //ქეთო აქ ონსუბმითის ფუნქცია შევცვალე კი ინახებოდა ლოქალშ მაგრამ მასივში არა და თან მჭირდებოდა დიზაინის მიხედვით რაღაცეების დამატება ოდნავ შევცალე დიდი არაფერი <3
   const onSubmit = async (data: FormValue) => {
     const existingInvoices = JSON.parse(
       localStorage.getItem("Invoices") || "[]"
     );
+
     const newInvoice = {
       ...data,
       id: Date.now(),
       status: "Pending",
-      total: 402.33,
+      total: data.total,
     };
+
     localStorage.setItem(
       "Invoices",
       JSON.stringify([...existingInvoices, newInvoice])
     );
+
+    console.log(data.total, "total in invoice");
     setDiscard(true);
   };
-
-  // const dataFromModal = localStorage.getItem("Invoice");
-  // if (dataFromModal) {
-  //   const savedInfo = JSON.parse(dataFromModal);
-  // }
-  // თუ ინფორმაციის წამოღება მოგინდება მეინ ფეიჯზე ეს ჩაკომენტარებული კოდი გამოიყენე, ოღონდ useEffect-ში ჩასვი<3
 
   useEffect(() => {
     if (discard) {
@@ -106,7 +103,7 @@ const Invoice = ({ onDiscard }: Props) => {
   }, [discard]);
 
   return (
-    <div className=" bg-gray-900/60 w-[100%] h-full absolute ">
+    <div className=" bg-gray-900/60 w-[100%] z-20 h-full absolute ">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-[50%] pl-[110px] top-0 left-0 h-[100vh] flex flex-col justify-start p-[20px] pr-[1.7px] rounded-r-[30px] bg-white absolute "

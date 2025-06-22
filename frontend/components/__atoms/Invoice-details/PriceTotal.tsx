@@ -76,7 +76,8 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
 
       <input
         type="text"
-        value={price}
+        value={`$${price}`}
+        {...register("values")}
         onChange={handlePriceChange}
         className={`w-[80px] h-[40px] border rounded text-center ${
           errors.values ? "border-red-500" : "border-gray-300"
@@ -86,6 +87,7 @@ const PriceTotal = ({ register, errors, setValue, watch }: Props) => {
       <input
         type="text"
         value={`$${quantity && price ? totalPrice : `0.00`}`}
+        {...register("total")}
         readOnly
         className="w-[80px] h-[40px] border rounded text-center border-gray-300"
       />

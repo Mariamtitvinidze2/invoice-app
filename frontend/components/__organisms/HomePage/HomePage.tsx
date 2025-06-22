@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import InvoiceDetail from "../InvoiceDetail/InvoiceDetail";
 import Invoice from "../Invoice/Invoice";
 import EMailProf from "../../../Images/email.png";
 import Image from "next/image";
+import Arrow from "../../../Images/arr.png";
+import InvoiceDetail from "../Invoice/InvoiceDetail";
 
 export type InvoiceData = {
   id: number;
@@ -22,14 +23,11 @@ export type InvoiceData = {
   description: string;
   date: string;
   status: string;
-  total: number;
-  items: {
-    id: number;
-    name: string;
-    quantity: number;
-    price: number;
-    total: number;
-  }[];
+  total: string;
+  quantity: string;
+  values: string;
+  item: string;
+  price: number;
 };
 
 const HomePage = () => {
@@ -39,6 +37,15 @@ const HomePage = () => {
     null
   );
   const router = useRouter();
+
+  const handleSaveInvoice = (updatedInvoice: InvoiceData) => {
+    const updatedInvoices = invoices.map((inv) =>
+      inv.id === updatedInvoice.id ? updatedInvoice : inv
+    );
+    setInvoices(updatedInvoices);
+    setSelectedInvoice(updatedInvoice);
+    localStorage.setItem("Invoices", JSON.stringify(updatedInvoices));
+  };
 
   useEffect(() => {
     const loggedIn = localStorage.getItem("isLoggedIn");
@@ -51,7 +58,6 @@ const HomePage = () => {
         setInvoices(
           parsedInvoices.map((invoice: any) => ({
             ...invoice,
-            items: invoice.items || [],
           }))
         );
       } catch (error) {
@@ -95,17 +101,24 @@ const HomePage = () => {
         onBack={handleBack}
         onStatusChange={handleStatusChange}
         onDelete={handleDeleteInvoice}
+        onSave={handleSaveInvoice}
       />
     );
   }
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen bg-[#F8F8FB] relative">
+    <div
+      className={`${
+        modal && `fixed`
+      } w-[100%] h-[100vh] flex items-start justify-center relative`}
+    >
       {modal && <Invoice onDiscard={() => setModal(false)} />}
-      <div className="flex-1 p-6 md:p-12 flex flex-col ">
-        <div className="flex flex-col items-center md:flex-row gap-[430px] ml-[300px] mb-8 md:mb-12">
+      <div
+        className={`"w-[700px] h-fit flex flex-col items-start justify-between mt-[50px] mb-8 "`}
+      >
+        <div className="w-[100%] flex flex-col items-center justify-between md:flex-row mb-8 ">
           <div>
-            <h1 className="text-2xl md:text-[32px] font-bold text-[#0C0E16] leading-none">
+            <h1 className="text-2xl md:text-[32px] font-bold text-[#0C0E16]   ">
               Invoices
             </h1>
             <p className="text-sm text-[#888EB0] mt-1">
@@ -133,40 +146,43 @@ const HomePage = () => {
         </div>
 
         {invoices.length > 0 ? (
-          <div className="flex items-center flex-col gap-4">
+          <div className="w-[100%] flex items-start flex-col gap-4">
             {invoices.map((inv) => (
               <div
                 key={inv.id}
                 onClick={() => handleInvoiceClick(inv)}
-                className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-white rounded-lg shadow w-full max-w-[900px] cursor-pointer hover:shadow-md transition"
+                className="flex flex-col md:flex-row justify-between items-start md:items-center p-6 bg-white rounded-lg shadow w-[100%]  cursor-pointer hover:shadow-md transition"
               >
-                <div className="flex justify-between w-full md:w-auto md:flex-1 mb-4 md:mb-0">
-                  <span className="font-semibold text-[#0C0E16]">
-                    #{inv.id.toString().slice(-6)}
-                  </span>
-                  <span className="text-[#888EB0] md:hidden">{inv.name}</span>
+                <div className="flex flex-row justify-between w-[100%] ">
+                  <div className="w-[110px]  ">
+                    <span className="font-semibold text-[#0C0E16]">
+                      #{inv.id.toString().slice(-6)}
+                    </span>
+                    <span className="text-[#888EB0] md:hidden">{inv.name}</span>
+                  </div>
+
+                  <div className="w-[130px] ">
+                    <span className="text-[#888EB0]">
+                      Due {new Date(inv.date).toLocaleDateString()}
+                    </span>
+                    <span className="text-[#0C0E16] font-bold md:hidden"></span>
+                  </div>
+
+                  <div className=" w-[120px] ">
+                    <span className="text-[#0C0E16] font-semibold">
+                      {inv.name}
+                    </span>
+                  </div>
+
+                  <div className="w-[100px] ">
+                    <span className="text-[#0C0E16] font-bold">
+                      ${inv.total}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex justify-between w-full md:w-auto md:flex-1">
-                  <span className="text-[#888EB0]">
-                    Due {new Date(inv.date).toLocaleDateString()}
-                  </span>
-                  <span className="text-[#0C0E16] font-bold md:hidden">
-                    £ {inv.total.toFixed(2)}
-                  </span>
-                </div>
-
-                <div className="hidden md:flex flex-1 justify-between">
-                  <span className="text-[#0C0E16] font-semibold">
-                    {inv.name}
-                  </span>
-                  <span className="text-[#0C0E16] font-bold">
-                    £ {inv.total.toFixed(2)}
-                  </span>
-                </div>
-
-                <span
-                  className={`px-3 py-1 rounded-full text-sm mt-4 md:mt-0 ${
+                <div
+                  className={`px-3 py-1 rounded-md text-sm mt-4 md:mt-0 text-center  w-[110px]  ${
                     inv.status === "Pending"
                       ? "bg-yellow-100 text-yellow-700"
                       : inv.status === "Paid"
@@ -175,28 +191,38 @@ const HomePage = () => {
                   }`}
                 >
                   ● {inv.status}
-                </span>
+                </div>
+
+                <Image
+                  src={Arrow}
+                  alt="left arrow"
+                  width={12}
+                  height={12}
+                  className="ml-2"
+                />
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex-1 flex flex-col items-center justify-center text-center">
-            <Image
-              src={EMailProf}
-              alt="Empty"
-              width={240}
-              height={200}
-              priority
-              className="mb-10"
-            />
-            <h2 className="text-2xl font-bold text-[#0C0E16] mb-4">
-              There is nothing here
-            </h2>
-            <p className="text-sm text-[#888EB0] max-w-[220px]">
-              Create an invoice by clicking the <br />
-              <span className="font-semibold">New Invoice</span> button and get
-              started
-            </p>
+          <div className=" h-[100px] flex flex-col items-center justify-center text-center  ">
+            <div className="text-center flex items-center flex-col justify-center gap-4 mt-[300px] ml-[200px] ">
+              <Image
+                src={EMailProf}
+                alt="Empty"
+                width={240}
+                height={200}
+                priority
+                className=" "
+              />
+              <h2 className="text-2xl font-bold text-[#0C0E16]  ">
+                There is nothing here
+              </h2>
+              <p className="text-sm text-[#888EB0]   ">
+                Create an invoice by clicking the <br />
+                <span className="font-semibold">New Invoice</span> button and
+                get started
+              </p>
+            </div>
           </div>
         )}
 
