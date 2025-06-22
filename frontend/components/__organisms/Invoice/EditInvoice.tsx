@@ -96,10 +96,10 @@ const EditInvoice = ({ onDiscard, invoice, onSave }: Props) => {
       email: data.email,
       description: data.description,
       date: data.date,
-      item: invoice.status,
-      quantity: invoice.status,
-      values: invoice.status,
-      total: invoice.status,
+      item: data.item,
+      quantity: data.quantity,
+      values: data.values,
+      total: data.total,
     };
 
     onSave(updatedInvoice);

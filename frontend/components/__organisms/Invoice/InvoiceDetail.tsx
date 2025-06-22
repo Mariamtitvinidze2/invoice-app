@@ -27,6 +27,9 @@ const InvoiceDetail = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [editInvoice, setEditInvoice] = useState(false);
   const [invoiceData, setInvoiceData] = useState(invoice);
+  const initialInvoice = React.useRef<InvoiceData>(
+    JSON.parse(JSON.stringify(invoice))
+  );
 
   const paymentDue = new Date(invoice.date);
   paymentDue.setDate(paymentDue.getDate() + 30);
@@ -118,9 +121,14 @@ const InvoiceDetail = ({
                 Mark as Paid
               </button>
             )}
+
             {editInvoice && (
               <EditInvoice
-                onDiscard={() => setEditInvoice(false)}
+                onDiscard={() => {
+                  setInvoiceData(initialInvoice.current);
+                  setEditInvoice(false);
+                  setCurrentStatus(initialInvoice.current.status);
+                }}
                 invoice={invoiceData}
                 onSave={(updatedInvoice) => {
                   setInvoiceData(updatedInvoice);
