@@ -40,7 +40,9 @@ const Signin = () => {
   });
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
+    const currentPath = window.location.pathname;
+
+    if (isLoggedIn === "true" && currentPath === "/signin") {
       router.push("/Home");
     }
   }, []);
