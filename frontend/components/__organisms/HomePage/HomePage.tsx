@@ -254,19 +254,21 @@ const HomePage = () => {
                 </div>
 
                 <div
-                  className={`p-[14px] flex items-center  md:mt-0 text-center w-[100px] h-[20px] rounded-md text-sm font-[inter] font-bold   ${
-                    inv.status === "Pending"
-                      ? theme === "dark"
-                        ? "border border-[#FF8F00] bg-[#FF8F00]/5 text-[#FF8F00] opacity-[0.57]"
-                        : "bg-yellow-100 text-yellow-700"
-                      : inv.status === "Paid"
-                      ? theme === "dark"
-                        ? "border border-[#33D69F] bg-[#33D69F]/5 text-[#33D69F] opacity-[0.57]"
-                        : "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-700"
-                  }`}
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-bold font-inter w-fit h-[32px]
+                     ${
+                       inv.status === "Pending"
+                         ? theme === "dark"
+                           ? "border border-[#FF8F00] bg-[#FF8F00]/10 text-[#FF8F00]"
+                           : "bg-yellow-100 text-yellow-700"
+                         : inv.status === "Paid"
+                         ? theme === "dark"
+                           ? "border border-[#33D69F] bg-[#33D69F]/10 text-[#33D69F]"
+                           : "bg-green-100 text-green-700"
+                         : "bg-gray-100 text-gray-700"
+                     }`}
                 >
-                  ● {inv.status}
+                  <span className="text-lg">●</span>
+                  {inv.status}
                 </div>
 
                 <Image

@@ -274,21 +274,20 @@ const InvoiceDetail = ({
           </div>
 
           <div
-            className={`rounded-b-lg p-7 flex justify-between items-center   ${
-              theme === "dark" ? "bg-[#F1F3FF]" : "bg-[#373B53] "
+            className={`rounded-b-lg p-7 flex justify-between items-center ${
+              theme === "dark" ? "bg-[#373B53]" : "bg-[#F1F3FF]"
             }`}
           >
             <p
-              // className={`font-semibold font-[inter]${
-              //   theme === "dark" ? "text-white" : "text-white"
-              // }`}
-              className="text-white font-semibold font-[inter] text-[23px]"
+              className={`font-semibold font-[inter] text-[18px] ${
+                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+              }`}
             >
               Amount Due
             </p>
             <p
-              className={`font-semibold font-[inter] text-white text-[23px] ${
-                theme === "dark" && "bg-[#373B53]"
+              className={`font-semibold font-[inter] text-[23px] ${
+                theme === "dark" ? "text-white" : "text-[#0C0E16]"
               }`}
             >
               ${invoiceData.total}
