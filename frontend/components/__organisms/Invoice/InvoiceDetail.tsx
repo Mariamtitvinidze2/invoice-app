@@ -236,7 +236,7 @@ const InvoiceDetail = ({
             } rounded-t-lg`}
           >
             <div
-              className={`w-[80%] flex flex-row justify-between  font-semibold font-[inter] ${
+              className={`w-[95%] flex flex-row justify-between  font-semibold font-[inter] ${
                 theme === "dark" ? "text-white" : "text-[#0C0E16]"
               }`}
             >
@@ -258,14 +258,14 @@ const InvoiceDetail = ({
                 {invoiceData.item}
               </div>
               <div
-                className={`md:col-span-1 font-bold ${
+                className={`md:col-span-1 ml-4 font-bold ${
                   theme === "dark" ? "text-white" : "text-[#0C0E16]"
                 }`}
               >
                 {invoiceData.quantity}
               </div>
               <div
-                className={`md:col-span-1 font-bold ${
+                className={`md:col-span-1 text-center font-bold ${
                   theme === "dark" ? "text-white" : "text-[#0C0E16]"
                 }`}
               >
@@ -282,20 +282,20 @@ const InvoiceDetail = ({
           </div>
 
           <div
-            className={`rounded-b-lg p-7 flex justify-between items-center ${
-              theme === "dark" ? "bg-[#373B53]" : "bg-[#F1F3FF]"
+            className={`rounded-b-lg p-7 flex justify-between bg-[#373B53] items-center ${
+              theme === "dark" && "bg-[#F1F3FF]"
             }`}
           >
             <p
-              className={`font-semibold font-[inter] text-[18px] ${
-                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+              className={`font-semibold font-[inter]  text-[18px] ${
+                theme === "dark" ? `text-[#0C0E16]` : `text-white`
               }`}
             >
               Amount Due
             </p>
             <p
               className={`font-semibold font-[inter] text-[23px] ${
-                theme === "dark" ? "text-white" : "text-[#0C0E16]"
+                theme === "dark" ? `text-[#0C0E16]` : `text-white`
               }`}
             >
               ${invoiceData.total}

@@ -341,13 +341,13 @@ const HomePage = () => {
                     localStorage.removeItem("isLoggedIn");
                     router.push("/");
                   }}
-                  className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md w-full"
+                  className="bg-red-500 cursor-pointer hover:bg-red-600 text-white py-2 px-4 rounded-md w-full"
                 >
                   Yes
                 </button>
                 <button
                   onClick={() => setShowLogoutModal(false)}
-                  className={`py-2 px-4 rounded-md w-full ${
+                  className={`py-2 px-4 cursor-pointer rounded-md w-full ${
                     theme === "dark"
                       ? "bg-[#252945] hover:bg-[#333752] text-white"
                       : "bg-gray-200 hover:bg-gray-300 text-[#0C0E16]"
