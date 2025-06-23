@@ -39,13 +39,13 @@ const Signin = () => {
     resolver: yupResolver(validationSchema),
   });
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const currentPath = window.location.pathname;
-
-    if (isLoggedIn === "true" && currentPath === "/signin") {
-      router.push("/Home");
+    if (typeof window !== "undefined") {
+      const loggedIn = localStorage.getItem("isLoggedIn");
+      if (loggedIn === "true" && pathname === "/") {
+        router.push("/Home");
+      }
     }
-  }, []);
+  }, [router, pathname]);
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
