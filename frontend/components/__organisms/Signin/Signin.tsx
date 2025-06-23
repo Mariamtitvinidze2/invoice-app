@@ -40,12 +40,10 @@ const Signin = () => {
   });
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    const currentPath = window.location.pathname;
-
-    if (isLoggedIn === "true" && currentPath === "/signin") {
+    if (isLoggedIn === "true" && window.location.pathname === "/signin") {
       router.push("/Home");
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("rememberedEmail");
@@ -55,12 +53,15 @@ const Signin = () => {
   const onSubmit = (data: FormData) => {
     const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
     const foundUser = users.find(
-      (u) => u.email === data.email && u.password === data.password
+      (u) =>
+        u.email.toLowerCase() === data.email.toLowerCase() &&
+        u.password === data.password
     );
 
     if (foundUser) {
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("rememberedEmail", data.email);
+      localStorage.setItem("user", JSON.stringify(foundUser));
       router.push("/Home");
     } else {
       setSubmitError("Incorrect email or password");

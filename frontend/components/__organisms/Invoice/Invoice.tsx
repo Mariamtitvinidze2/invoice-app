@@ -84,11 +84,15 @@ const Invoice = ({ onDiscard }: Props) => {
       localStorage.getItem("Invoices") || "[]"
     );
 
+    // ამოვიღოთ მიმდინარე მომხმარებელი
+    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+
     const newInvoice = {
       ...data,
       id: Date.now(),
       status: "Pending",
       total: data.total,
+      userEmail: currentUser.email, // 👈 ეს ველი შენ გჭირდება წაშლის კონტროლისთვის
     };
 
     localStorage.setItem(
@@ -105,6 +109,20 @@ const Invoice = ({ onDiscard }: Props) => {
       onDiscard();
     }
   }, [discard]);
+
+  useEffect(() => {
+    const invoices = JSON.parse(localStorage.getItem("Invoices") || "[]");
+    const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+    const updated = invoices.map((invoice: any) => {
+      if (!invoice.userEmail) {
+        return { ...invoice, userEmail: currentUser.email };
+      }
+      return invoice;
+    });
+
+    localStorage.setItem("Invoices", JSON.stringify(updated));
+  }, []);
 
   return (
     <div

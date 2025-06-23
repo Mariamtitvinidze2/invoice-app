@@ -29,6 +29,8 @@ export type InvoiceData = {
   values: string;
   item: string;
   price: number;
+  userId: string;
+  userEmail: string;
 };
 
 const HomePage = () => {
