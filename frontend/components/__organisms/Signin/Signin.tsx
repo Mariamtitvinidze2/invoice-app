@@ -39,9 +39,16 @@ const Signin = () => {
     resolver: yupResolver(validationSchema),
   });
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true" && window.location.pathname === "/signin") {
-      router.push("/Home");
+    if (typeof window !== "undefined") {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const currentPath = window.location.pathname;
+
+      if (
+        isLoggedIn === "true" &&
+        (currentPath === "/" || currentPath === "/signin")
+      ) {
+        router.push("/Home");
+      }
     }
   }, [router]);
 
