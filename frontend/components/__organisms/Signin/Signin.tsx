@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
-
 import { useRouter, usePathname } from "next/navigation";
 
 interface User {

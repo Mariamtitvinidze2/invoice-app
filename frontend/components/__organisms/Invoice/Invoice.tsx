@@ -10,8 +10,6 @@ import Image from "next/image";
 import Trash from "../../../Images/trash.png";
 import { useTheme } from "../../ThemeContext";
 
-import { watch } from "fs";
-
 type Props = {
   onDiscard: () => void;
 };
